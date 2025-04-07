@@ -1,28 +1,34 @@
 import os
+import json
 
-# Caminho da pasta 'dataset'
 dataset_path = "dataset"
+names_file = "names.json"
 
-# Função para limpar a pasta
 def clear_dataset():
-    # Verifica se a pasta existe
     if os.path.exists(dataset_path):
-        # Contador para verificar se algum arquivo foi removido
         files_removed = 0
-        # Remove todos os arquivos dentro da pasta (sem remover subpastas)
         for filename in os.listdir(dataset_path):
             file_path = os.path.join(dataset_path, filename)
             try:
                 if os.path.isfile(file_path):
-                    os.remove(file_path)  # Remove apenas arquivos, não diretórios
-                    files_removed += 1  # Incrementa o contador
+                    os.remove(file_path)
+                    files_removed += 1
             except Exception as e:
                 print(f"[ERRO] Não foi possível excluir {file_path}. Motivo: {e}")
-        
+
         if files_removed > 0:
-            print(f"\n[INFO] Limpeza concluída.")
+            print(f"[INFO] {files_removed} arquivos removidos do dataset.")
         else:
             print("[INFO] Nenhum arquivo encontrado para remover.")
 
-# Chama a função para limpar
-clear_dataset()
+def clear_names_file():
+    try:
+        with open(names_file, 'w') as f:
+            json.dump({}, f)
+        print("[INFO] names.json limpo com sucesso.")
+    except Exception as e:
+        print(f"[ERRO] Não foi possível limpar names.json. Motivo: {e}")
+
+if __name__ == "__main__":
+    clear_dataset()
+    clear_names_file()
